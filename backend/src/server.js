@@ -15,7 +15,8 @@ const app = express();
 
 const PORT = ENV.PORT || 5000;
 
-app.use(express.json({limit:"5mb"}));
+app.use(express.json({limit:"15mb"}));
+app.use(express.urlencoded({extended: true, limit:"15mb"}))
 app.use(cors({origin:ENV.CLIENT_URL, credentials:true}));
 app.use(cookieParser());
 app.use("/api/auth", authRoutes);
