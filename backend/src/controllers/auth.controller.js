@@ -99,7 +99,7 @@ export const updateProfile = async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { profilePic: uploadResponse.secure_url },
-      { new: true }
+      { new: true ,select :"-password"}
     );
 
     res.status(200).json(updatedUser);

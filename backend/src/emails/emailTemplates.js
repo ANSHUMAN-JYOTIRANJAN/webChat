@@ -22,7 +22,7 @@ export function createWelcomeEmailTemplate(name, clientURL) {
       <p>We're excited to have you join our messaging platform!</p>
 
       <div style="text-align: center; margin: 30px 0;">
-        <a href=${clientURL} style="background: linear-gradient(to right, #36D1DC, #5B86E5); color: white; text-decoration: none; padding: 12px 30px; border-radius: 50px; font-weight: 500;">
+        <a href="${clientURL}" style="background: linear-gradient(to right, #36D1DC, #5B86E5); color: white; text-decoration: none; padding: 12px 30px; border-radius: 50px; font-weight: 500;">
           Open Messenger
         </a>
       </div>

@@ -1,13 +1,13 @@
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
-import SignUpPage from "../pages/SignUpPage.jsx";
-
+import{toast} from "react-hot-toast";
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
   isCheckingAuth: true,
   isSigningUp: false,
   isLoggingIn:false,
+  onlineUsers: [],
   checkAuth: async () => {
     try {
       const res = await axiosInstance.get("/auth/check");
@@ -15,7 +15,7 @@ export const useAuthStore = create((set, get) => ({
       // get().connectSocket();
     } catch (error) {
       console.log("Error in authCheck:", error);
-      set({ authUser: null });
+        set({ authUser: null });
     } finally {
       set({ isCheckingAuth: false });
     }
@@ -43,9 +43,9 @@ export const useAuthStore = create((set, get) => ({
 
       toast.success("Logged in successfully");
 
-      get().connectSocket();
+     // get().connectSocket();
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response.data.message );
     } finally {
       set({ isLoggingIn: false });
     }
@@ -56,7 +56,7 @@ export const useAuthStore = create((set, get) => ({
       await axiosInstance.post("/auth/logout");
       set({ authUser: null });
       toast.success("Logged out successfully");
-      get().disconnectSocket();
+     // get().disconnectSocket();
     } catch (error) {
       toast.error("Error logging out");
       console.log("Logout error:", error);
@@ -66,7 +66,13 @@ export const useAuthStore = create((set, get) => ({
   updateProfile: async (data) => {
     try {
       const res = await axiosInstance.put("/auth/update-profile", data);
-      set({ authUser: res.data });
+      set((state) =>({
+         authUser:{
+           ...state.authUser,
+           ...res.data,
+         }
+      })
+    )
       toast.success("Profile updated successfully");
     } catch (error) {
       console.log("Error in update profile:", error);
