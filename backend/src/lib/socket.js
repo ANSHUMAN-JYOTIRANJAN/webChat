@@ -8,7 +8,7 @@ import { socketAuthMiddleware } from "../middleware/socket.auth.middleware.js";
 const app = express();
 const server = http.createServer(app);
 
-const io = new server(server, {
+const io = new Server(server, {
   cors: {
     origin: [ENV.CLIENT_URL],
     credentials: true,
