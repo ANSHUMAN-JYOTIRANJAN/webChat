@@ -2,39 +2,44 @@ import { Server } from "socket.io";
 import http from "http";
 import express from "express";
 import { ENV } from "./env.js";
-import { url } from "inspector";
 import { socketAuthMiddleware } from "../middleware/socket.auth.middleware.js";
 
 const app = express();
 const server = http.createServer(app);
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://web-app-t4aj.onrender.com",
+];
+
 const io = new Server(server, {
   cors: {
-    origin: [ENV.CLIENT_URL],
+    origin: allowedOrigins,
     credentials: true,
   },
 });
 
-export function getReceiverSocketId(userId){
-    return userSocketMap[userId];
+const userSocketMap = {};
+
+export function getReceiverSocketId(userId) {
+  return userSocketMap[userId];
 }
 
 io.use(socketAuthMiddleware);
 
-const userSocketMap = {};
-io.on("connection",(socket) => {
-    console.log("A user connected",socket.user.fullName);
+io.on("connection", (socket) => {
+  console.log("A user connected", socket.user.fullName);
 
-  const userId = socket.userId;
+  const userId = socket.user._id;
   userSocketMap[userId] = socket.id;
 
-   io.emit("getOnlineUsers", Object.keys(userSocketMap));
+  io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
-   socket.on("disconnect",() => {
-    console.log("A user disconnected ",socket.user.fullName);
+  socket.on("disconnect", () => {
+    console.log("A user disconnected", socket.user.fullName);
     delete userSocketMap[userId];
-    io.emit("getOnlineUsers",Object.keys(userSocketMap));
-   })
+    io.emit("getOnlineUsers", Object.keys(userSocketMap));
+  });
 });
 
-export {io, app, server};
+export { io, app, server };
