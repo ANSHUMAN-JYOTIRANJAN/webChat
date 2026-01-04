@@ -2,12 +2,15 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import { ENV } from "../lib/env.js";
 
+const parseCookies = (cookieHeader = "") =>
+  Object.fromEntries(
+    cookieHeader.split("; ").map(c => c.split("="))
+  );
+
 export const socketAuthMiddleware = async (socket, next) => {
   try {
-    const token = socket.handshake.headers.cookie
-      ?.split("; ")
-      .find((row) => row.startsWith("jwt="))
-      ?.split("=")[1];
+     const cookies = parseCookies(socket.handshake.headers.cookie);
+    const token = cookies.jwt;
 
     if (!token) {
       console.log("Socket connection rejected: No token provided");
@@ -30,6 +33,11 @@ export const socketAuthMiddleware = async (socket, next) => {
     );
     next();
   } catch (error) {
+     if (error.name === "TokenExpiredError") {
+       console.log("Socket auth failed: Token expired");
+      return next(new Error("Token expired"));
+    }
+
     console.log("Error in socket authentication:", error.message);
     next(new Error("Unauthorized - Authentication failed"));
   }
