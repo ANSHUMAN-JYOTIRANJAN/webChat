@@ -17,7 +17,7 @@ const PORT = ENV.PORT || 5000;
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://web-app-t4aj.onrender.com",
+  "https://chating-36up.onrender.com",
 ];
 
 app.use(express.json({limit:"15mb"}));
