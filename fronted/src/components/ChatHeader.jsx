@@ -6,6 +6,8 @@ import { useAuthStore } from "../store/useAuthStore";
 export default function ChatHeader() {
   const { selectedUser, setSelectedUser } = useChatStore();
   const { onlineUsers } = useAuthStore();
+
+   if (!selectedUser) return null;
   const isOnline = onlineUsers.includes(selectedUser._id);
 
   useEffect(() => {
