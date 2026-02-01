@@ -6,7 +6,7 @@ export const welComeEmail = async (email, name, clientURL) => {
     to:[email],
     subject: "Welcome to WebChat!",
     html: createWelcomeEmailTemplate(name,
-       clientURL ||"http://localhost:3000" ),
+       clientURL ||"http://localhost:5000" ),
   });
   if (error) {
     console.log("Error sending welcominh email:", error);
