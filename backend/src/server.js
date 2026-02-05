@@ -18,6 +18,7 @@ const PORT = ENV.PORT || 5000;
 const allowedOrigins = [
   "http://localhost:5173",
   "https://videoconferen.onrender.com",
+  "https://webchatapp-wxcc.onrender.com"
 ];
 
 app.use(express.json({limit:"15mb"}));
