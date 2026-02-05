@@ -14,13 +14,11 @@ function LoginPage() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const { login, isLoggingIn } = useAuthStore();
 
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     login(formData);
      
-  };
+};
 
   return (
     <div className="w-full flex items-center justify-center p-4 bg-slate-900">
@@ -85,7 +83,6 @@ function LoginPage() {
                     )}
                   </button>
                 </form>
-
                 <div className="mt-6 text-center">
                   <Link to="/signup" className="auth-link">
                     Don't have an account? Sign Up
