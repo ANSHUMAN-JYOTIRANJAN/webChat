@@ -15,23 +15,25 @@ const __dirname = path.resolve();
 
 const PORT = ENV.PORT || 5000;
 
-// const allowedOrigins = [
-//   "http://localhost:5173",
-//   "https://chating-36up.onrender.com",
-// ];
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://videoconferen.onrender.com",
+];
 
 app.use(express.json({limit:"15mb"}));
-// app.use(express.urlencoded({extended: true, limit:"15mb"}))
-// app.use(
-//   cors({ 
-//     origin: (origin, callback) => {
-//       if (!origin) return callback(null, true);
-//       if (allowedOrigins.includes(origin)) return callback(null, true);
-//       callback(new Error("Not allowed by CORS"));
-//     },
-//     credentials: true,
-//   })
-// );
+app.use(express.urlencoded({extended: true, limit:"15mb"}))
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  })
+);
 //  app.options("*", cors());
 app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
 app.use(cookieParser());
